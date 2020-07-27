@@ -40,7 +40,7 @@ class Main extends PluginBase implements Listener
 
     	if (!$this->config->exists($name)) {
     		$player->setImmobile();
-    		$player->sendMessage("§a[NEW!LoginSystem]サーバーへようこそ。\nこのサーバーではログインシステムを導入しております。\n/register [password] でアカウントを登録しましょう。");
+    		$player->sendMessage("§a[Login] Welcome to CubicPE. Register your account with \n/register [password] and login with \n /login [password]");
     	}
     	if ($this->config->exists($name)) 
     	{
@@ -50,10 +50,10 @@ class Main extends PluginBase implements Listener
     		if ($myip === $ip&&$myuuid === $uuid) 
     		{
                 
-            $player->sendMessage("§a[NEW!LoginSystem]認証に成功しました。おかえりなさい!");
+            $player->sendMessage("§a[Login] Login was successful. Welcome back!");
                 
     		}else{
-    			$player->sendMessage("§4[NEWLoginSystem]認証に失敗しました。IPアドレスや端末変更された可能性がございます。\n/login password でもう一度ログインをお願いいたします。");
+    			$player->sendMessage("§4[Login] Wrong Password,Try Again!");
       		    $player->setImmobile();  			
     		}
     	
@@ -66,7 +66,7 @@ class Main extends PluginBase implements Listener
 
         if(!$sender instanceof Player)
         {
-          $sender->sendMessage("§cゲーム内で実行してください。コンソールからは実行ができません。");
+          $sender->sendMessage("§cThis comment must be entered ingame!");
           return true;
         }
 
@@ -80,7 +80,7 @@ class Main extends PluginBase implements Listener
          {
          	if (!isset($args[0])) 
          	{
-         		$sender->sendMessage("アカウント登録方法：/register [任意のパスワード]");
+         		$sender->sendMessage("To Register, type /register [password]");
          	}else{
             $password = ($args[0]);
             $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -89,7 +89,7 @@ class Main extends PluginBase implements Listener
             $this->config2->set($name,$ip);
             $this->config3->set($name,$uuid);
             $sender->setImmobile(false);
-            $sender->sendMessage("§a[LoginSystem]password・その他端末情報を保存し、正常にアカウント登録が完了しました。");
+            $sender->sendMessage("§a[Login] Thank You for Registering!");
             $this->config->save();
             $this->config2->save();
             $this->config3->save();
@@ -101,12 +101,12 @@ class Main extends PluginBase implements Listener
           {
           	if (!isset($args[0])) 
           	{
-          		$sender->sendMessage("§4ログイン方法:/login password ");
+          		$sender->sendMessage("§4To Login, type /login [password] ");
           	}
             $hash = $this->config->get($name);
             if (password_verify($args[0], $hash)) 
             {
-            	$sender->sendMessage("§a[LoginSystem]password認証に成功しました。情報の変更を行います。");
+            	$sender->sendMessage("§a[Login] Login Was Successful!");
             	$this->config2->remove($name);
             	$this->config3->remove($name);
             	$this->config2->set($name,$ip);
@@ -117,7 +117,7 @@ class Main extends PluginBase implements Listener
 
             }else
             {
-            	$sender->sendMessage("§4[エラー]ログインができませんでした。正しく入力できているかご確認をお願い致します。");
+            	$sender->sendMessage("§4Password is incorrect!");
             }
           
          }
